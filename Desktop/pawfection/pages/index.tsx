@@ -185,8 +185,8 @@ export default function Home() {
             <Box key={animal.id} 
                 p={3} 
                 my={2} 
-                w="80%"
-                h="100px"
+                w= "80%"
+                minH={["150px", "100px"]}
                 border="1px solid orange"
                 borderRadius="md"
                 cursor="pointer"
