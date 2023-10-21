@@ -9,4 +9,5 @@ export interface Animal {
   fed: boolean;
   played: boolean;
   medicated: boolean;
+  requiresMedication: boolean
 }

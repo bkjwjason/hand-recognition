@@ -14,7 +14,7 @@ const sampleAnimals: Animal[] = [
       breed: 'Golden Retriever',
       fed: true,
       played: true,
-      medicated: null,
+      medicated: false,
       requiresMedication: false
     },
     {
@@ -40,7 +40,7 @@ const sampleAnimals: Animal[] = [
         breed: 'Tofu',
         fed: true,
         played: false,
-        medicated: null,
+        medicated: false,
         requiresMedication: false
       },
       {
@@ -92,7 +92,7 @@ const sampleAnimals: Animal[] = [
         breed: 'Terrier',
         fed: false,
         played: false,
-        medicated: null,
+        medicated: false,
         requiresMedication: false
       },
   ];
@@ -106,7 +106,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleSubmit = () => {
     setAnimals(prev => [...prev, { ...formData, dateOfAdmission: new Date(formData.dateOfAdmission),
-        dateOfBirth: new Date(formData.dateOfBirth), fed: false, played: false, medicated: false }]);
+        dateOfBirth: new Date(formData.dateOfBirth), fed: false, played: false, medicated: false}]);
     setIsModalOpen(false);
   };
 
@@ -129,7 +129,16 @@ export default function Home() {
     animal.id.includes(searchQuery)
   );
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    id: string;
+    name: string;
+    gender: 'Male' | 'Female';
+    dateOfAdmission: string;
+    dateOfBirth: string;
+    type: string;
+    breed: string;
+    requiresMedication: boolean;
+  }>({
     id: '',
     name: '',
     gender: 'Male', // default value
@@ -142,7 +151,11 @@ export default function Home() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'gender') {
+      setFormData(prev => ({ ...prev, [name]: value as 'Male' | 'Female' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -249,7 +262,7 @@ export default function Home() {
                             name="gender"
                             defaultValue="Male"
                             value={formData.gender}
-                            onChange={val => setFormData(prev => ({ ...prev, gender: val }))}
+                            onChange={val => setFormData(prev => ({ ...prev, gender: val as 'Male' | 'Female' }))}
                         >
                             <HStack spacing={5}>
                             <Radio value="Male">Male</Radio>
