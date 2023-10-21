@@ -149,14 +149,15 @@ export default function Home() {
     requiresMedication: false,
   });
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     if (name === 'gender') {
       setFormData(prev => ({ ...prev, [name]: value as 'Male' | 'Female' }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
-  };
+};
+
 
   const handleDelete = (id: string) => {
     const updatedAnimals = animals.filter(animal => animal.id !== id);
