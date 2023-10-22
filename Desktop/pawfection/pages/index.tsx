@@ -174,7 +174,7 @@ export default function Home() {
         <Heading size="xl" color="#FFFFD2">Pawfection</Heading>
       </Flex>
       
-      <Input placeholder="Search by animal name or ID" mb={5} color="#FFFFD2" borderColor="#FFFFD2" borderWidth={2}
+      <Input placeholder="Search by animal name or ID" mb={5} color="black" borderColor="#FFFFD2" borderWidth={2}
       value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
     <Button bgColor="#FCBAD3" color="#FFFFD2" onClick={() => setIsModalOpen(true)} mb={5}>
         Add New Animal
@@ -196,7 +196,7 @@ export default function Home() {
                      (animal.requiresMedication ? animal.medicated : true)) ? 
                     "#30E3CA" : "#AA96DA"
                   }
-                  color="#FFFFD2"
+                  color="black"
                 onClick={() => setSelectedAnimal(animal)}>
                     <Text fontWeight="bold" mb={2}>{animal.name}</Text>
                     <Text>ID: {animal.id}</Text>
@@ -206,7 +206,7 @@ export default function Home() {
           {/* You can add a button here to open a modal/form to add new animals */}
         </VStack>
         
-        <Box flex="2" pl={3} borderLeft="3px solid #FFFFD2" color="#FFFFD2" fontWeight={"bold"}>
+        <Box flex="2" pl={3} borderLeft="3px solid #FFFFD2" color="black"fontWeight={"bold"}>
           {selectedAnimal ? (
             <VStack alignItems="start" spacing={3}>
               <Text>Name: {selectedAnimal.name}</Text>
