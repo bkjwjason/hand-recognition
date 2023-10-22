@@ -16,11 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={'${inter.className} bg-stone-900 text-slate-100 container mx-auto p-4 flex flex-col min-h-screen'}>
+      <body className={'${inter.className} bg-stone-900 text-slate-100 font-bold container mx-auto p-4 flex flex-col min-h-screen'}>
         <main className='flex flex-col flex-grow justify-center'>
           {children}
         </main>
-        <footer className={'mt-8 text-xs text-center'}>
+        <footer className={'mt-8 text-xs text-center font-normal'}>
           This quiz was made for the Senior Seminar: Anatomy of Crime.
         </footer>
       </body>
