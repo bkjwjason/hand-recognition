@@ -169,33 +169,34 @@ export default function Home() {
   
 
   return (
-    <Flex minH="100vh" direction="column" p={5} color="white" bgColor={"black"}>
+    <Flex minH="100vh" direction="column" p={5} color="white" bgColor="#A8D8EA">
       <Flex justify="space-between" alignItems="center" mb={5}>
-        <Heading size="xl" color="orange">Pawfection</Heading>
+        <Heading size="xl" color="#FFFFD2">Pawfection</Heading>
       </Flex>
       
-      <Input  placeholder="Search by animal name or ID" mb={5} borderColor="orange" focusBorderColor="orange.400"
+      <Input placeholder="Search by animal name or ID" mb={5} color="#FFFFD2" borderColor="#FFFFD2" borderWidth={2}
       value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-    <Button colorScheme="orange" onClick={() => setIsModalOpen(true)} mb={5}>
+    <Button bgColor="#FCBAD3" color="#FFFFD2" onClick={() => setIsModalOpen(true)} mb={5}>
         Add New Animal
     </Button>
       <Flex flex="1">
-        <VStack flex="1" spacing={5} borderColor="orange" alignItems="start" maxH="calc(100vh - 200px)" overflowY="auto">
+        <VStack flex="1" spacing={5} alignItems="start" maxH="calc(100vh - 200px)" overflowY="auto">
           {filteredAnimals.map(animal => (
             <Box key={animal.id} 
                 p={3} 
                 my={2} 
                 w= "80%"
                 minH={["150px", "100px"]}
-                border="1px solid orange"
+                border="1px solid #FFFFD2"
                 borderRadius="md"
                 cursor="pointer"
+                fontWeight={"bold"}
                 backgroundColor={
                     (animal.fed && animal.played && 
                      (animal.requiresMedication ? animal.medicated : true)) ? 
-                    "green" : "red"
+                    "#30E3CA" : "#AA96DA"
                   }
-                color="white"
+                  color="#FFFFD2"
                 onClick={() => setSelectedAnimal(animal)}>
                     <Text fontWeight="bold" mb={2}>{animal.name}</Text>
                     <Text>ID: {animal.id}</Text>
@@ -205,7 +206,7 @@ export default function Home() {
           {/* You can add a button here to open a modal/form to add new animals */}
         </VStack>
         
-        <Box flex="2" pl={3} borderLeft="1px solid orange">
+        <Box flex="2" pl={3} borderLeft="3px solid #FFFFD2" color="#FFFFD2" fontWeight={"bold"}>
           {selectedAnimal ? (
             <VStack alignItems="start" spacing={3}>
               <Text>Name: {selectedAnimal.name}</Text>
@@ -230,7 +231,7 @@ export default function Home() {
                 Medicated
                 </Checkbox>
                 )}
-                <Button colorScheme="red" onClick={() => handleDelete(selectedAnimal.id)}>
+                <Button bgColor="#FC5185" color="#FFFFD2" onClick={() => handleDelete(selectedAnimal.id)}>
                     Delete
                 </Button>
             </VStack>
