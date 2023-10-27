@@ -216,7 +216,7 @@ const handleCommand = () => {
       {outputMessage && <Text color="black" fontWeight="bold">{outputMessage}</Text>}
       <Flex flex="1">
         <VStack flex="1" spacing={5} alignItems="start" maxH="calc(100vh - 200px)" overflowY="auto">
-          {animals.map(animal => (
+          {animals.map((animal, index) => (
             <Box key={animal.id} 
                 p={3} 
                 my={2} 
@@ -233,7 +233,7 @@ const handleCommand = () => {
                   }
                   color="black"
                 onClick={() => setSelectedAnimal(animal)}>
-                    <Text fontWeight="bold" mb={2}>{animal.name}</Text>
+                    <Text fontWeight="bold" mb={2}>{index + 1}. {animal.name}</Text>
                     <Text>ID: {animal.id}</Text>
                     <Text>Type: {animal.type}</Text>
             </Box>
