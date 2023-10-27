@@ -127,10 +127,10 @@ const handleCommand = () => {
   if (command.startsWith("add")) {
       const newAnimal: Animal = {
           id: '9999',
-          name: 'Jason',
+          name: 'Sausage',
           gender: 'Male',
-          dateOfAdmission: new Date('2000-12-09'),
-          dateOfBirth: new Date('2000-12-09'),
+          dateOfAdmission: new Date('2022-11-11'),
+          dateOfBirth: new Date('2022-11-11'),
           type: 'Dog',
           breed: 'German Shepherd',
           fed: false,
