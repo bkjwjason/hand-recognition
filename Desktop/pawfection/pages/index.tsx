@@ -12,8 +12,8 @@ const sampleAnimals: Animal[] = [
       dateOfBirth: new Date('2020-05-20'),
       type: 'Dog',
       breed: 'Golden Retriever',
-      fed: true,
-      played: true,
+      fed: false,
+      played: false,
       medicated: false,
       requiresMedication: false
     },
@@ -102,62 +102,19 @@ const sampleAnimals: Animal[] = [
 export default function Home() {
   const [animals, setAnimals] = useState<Animal[]>(sampleAnimals);
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null); 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleSubmit = () => {
-    setAnimals(prev => [...prev, { ...formData, dateOfAdmission: new Date(formData.dateOfAdmission),
-        dateOfBirth: new Date(formData.dateOfBirth), fed: false, played: false, medicated: false}]);
-    setIsModalOpen(false);
-  };
+  const [command, setCommand] = useState("");
+  const [outputMessage, setOutputMessage] = useState<string | null>(null);
 
-
-
-  const handleCheckboxChange = (attribute: keyof Animal) => {
-    // Update selectedAnimal state
-    setSelectedAnimal(prev => prev ? { ...prev, [attribute]: !prev[attribute] } : null);
-  
-    // Update animals state
-    setAnimals(prevAnimals => 
-      prevAnimals.map(animal => 
-        animal.id === selectedAnimal?.id ? { ...animal, [attribute]: !animal[attribute] } : animal
-      )
-    );
-  };
-
-  const filteredAnimals = animals.filter(animal => 
-    animal.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    animal.id.includes(searchQuery)
-  );
-
-  const [formData, setFormData] = useState<{
-    id: string;
-    name: string;
-    gender: 'Male' | 'Female';
-    dateOfAdmission: string;
-    dateOfBirth: string;
-    type: string;
-    breed: string;
-    requiresMedication: boolean;
-  }>({
-    id: '',
-    name: '',
-    gender: 'Male', // default value
-    dateOfAdmission: '',
-    dateOfBirth: '',
-    type: '',
-    breed: '',
-    requiresMedication: false,
-  });
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === 'gender') {
-      setFormData(prev => ({ ...prev, [name]: value as 'Male' | 'Female' }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+  const getMedicationVideoID = (type: string) => {
+    switch (type) {
+        case 'Dog':
+            return 'Y3yHgItqGmo';
+        case 'Cat':
+            return 'Y3meUkY2e4Y';
+        default:
+            return 'sSMQiUnCtZI';
     }
 };
-
 
   const handleDelete = (id: string) => {
     const updatedAnimals = animals.filter(animal => animal.id !== id);
@@ -165,23 +122,101 @@ export default function Home() {
     setSelectedAnimal(null); 
 };
 
-  
-  
+const handleCommand = () => {
+  const parts = command.split(" ");
+  if (command.startsWith("add")) {
+      const newAnimal: Animal = {
+          id: '9999',
+          name: 'Jason',
+          gender: 'Male',
+          dateOfAdmission: new Date('2000-12-09'),
+          dateOfBirth: new Date('2000-12-09'),
+          type: 'Dog',
+          breed: 'German Shepherd',
+          fed: false,
+          played: false,
+          medicated: false,
+          requiresMedication: true,
+      };
+      setAnimals(prev => [...prev, newAnimal]);
+      setCommand("");  // Clear the command input
+      setOutputMessage("Successfully added!"); 
+  } else if (command.startsWith("mark")) {
+      const parts = command.split(" ");
+      if (parts.length >= 3) {
+        const index = parseInt(parts[1]);
+        const attributes = parts.slice(2).join(" ").split(",").map(attr => attr.trim());
+        updateAnimalAttributes(index, attributes, true);
+      }
+    } else if (command.startsWith("unmark")) {
+      const parts = command.split(" ");
+      if (parts.length >= 3) {
+        const index = parseInt(parts[1]);
+        const attributes = parts.slice(2).join(" ").split(",").map(attr => attr.trim());
+        updateAnimalAttributes(index, attributes, false);
+      }
+    } else if (command.startsWith("delete")) {
+      if(parts.length === 2) {
+        const index = parseInt(parts[1]);
+        if(index >= 1 && index <= animals.length) {
+          handleDelete(animals[index - 1].id);
+          setOutputMessage(`Animal at index ${index} deleted!`);
+        } else {
+          setOutputMessage("Invalid index for delete!");
+        }
+      } else {
+        setOutputMessage("Invalid delete command format. It should be: delete [index]");
+      }
+    } else {
+      setOutputMessage("Invalid command!");
+    }
+  };
 
+  const updateAnimalAttributes = (index: number, attributes: string[], value: boolean) => {
+    if (index >= 1 && index <= animals.length) {
+      let updatedAnimal = {...animals[index - 1]};
+      attributes.forEach(attr => {
+        switch (attr) {
+          case "fed":
+            updatedAnimal.fed = value;
+            break;
+          case "played":
+            updatedAnimal.played = value;
+            break;
+          case "medicated":
+            updatedAnimal.medicated = value;
+            break;
+          default:
+            // Handle unknown attributes or do nothing
+            break;
+        }
+      });
+      const updatedAnimals = [...animals];
+      updatedAnimals[index - 1] = updatedAnimal;
+      setAnimals(updatedAnimals);
+  
+      // Check if the selected animal is the one being updated
+      if (selectedAnimal?.id === updatedAnimal.id) {
+        setSelectedAnimal(updatedAnimal);
+      }
+  
+      setOutputMessage(value ? `Attributes updated for ${updatedAnimal.name}!` : `Attributes reset for ${updatedAnimal.name}!`);
+    } else {
+      setOutputMessage("Invalid index!");
+    }
+  };
   return (
     <Flex minH="100vh" direction="column" p={5} color="white" bgColor="#A8D8EA">
       <Flex justify="space-between" alignItems="center" mb={5}>
         <Heading size="xl" color="#FFFFD2">Pawfection</Heading>
       </Flex>
       
-      <Input placeholder="Search by animal name or ID" mb={5} color="black" borderColor="#FFFFD2" borderWidth={2}
-      value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-    <Button bgColor="#FCBAD3" color="#FFFFD2" onClick={() => setIsModalOpen(true)} mb={5}>
-        Add New Animal
-    </Button>
+      <Input placeholder="Input Command" mb={5} color="black" borderColor="#FFFFD2" borderWidth={2}
+      value={command} onChange={(e) => setCommand(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleCommand()}/>
+      {outputMessage && <Text color="black" fontWeight="bold">{outputMessage}</Text>}
       <Flex flex="1">
         <VStack flex="1" spacing={5} alignItems="start" maxH="calc(100vh - 200px)" overflowY="auto">
-          {filteredAnimals.map(animal => (
+          {animals.map(animal => (
             <Box key={animal.id} 
                 p={3} 
                 my={2} 
@@ -215,107 +250,29 @@ export default function Home() {
               <Text>Date of Birth: {selectedAnimal.dateOfBirth.toLocaleDateString()}</Text>
               <Text>Type: {selectedAnimal.type}</Text>
               <Text>Breed: {selectedAnimal.breed}</Text>
-              <Checkbox isChecked={selectedAnimal.fed} 
-              onChange={() => handleCheckboxChange('fed')}>
-                Fed
-                </Checkbox>
-                <Checkbox 
-                isChecked={selectedAnimal.played} 
-                onChange={() => handleCheckboxChange('played')}>
-                Played
-                </Checkbox>
-                {selectedAnimal.requiresMedication && (
-                <Checkbox 
-                isChecked={selectedAnimal.medicated} 
-                onChange={() => handleCheckboxChange('medicated')}>
-                Medicated
-                </Checkbox>
-                )}
-                <Button bgColor="#FC5185" color="#FFFFD2" onClick={() => handleDelete(selectedAnimal.id)}>
-                    Delete
-                </Button>
-            </VStack>
+              <Text color={selectedAnimal.fed ? "green" : "red"}>Fed: {selectedAnimal.fed ? "Yes" : "No"}</Text>
+              <Text color={selectedAnimal.played ? "green" : "red"}>Played: {selectedAnimal.played ? "Yes" : "No"}</Text>
+              {selectedAnimal.requiresMedication && (
+                <>
+                      <Text as="span" color={selectedAnimal.medicated ? "green.500" : "red.500"}>
+                          Medicated: {selectedAnimal.medicated ? "Yes" : "No"}
+                      </Text>
+                    <Box my={3}>
+                        <iframe
+                            width="560"
+                            height="315"
+                            src={`https://www.youtube.com/embed/${getMedicationVideoID(selectedAnimal.type)}`}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                    </Box>
+                </>
+          )}
+          </VStack>
           ) : (
             <Text>Select an animal to view details</Text>
           )}
         </Box>
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>Add New Animal</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                    <VStack spacing={4} width="100%">
-                        <Input 
-                        name="id" 
-                        placeholder="Animal ID"
-                        value={formData.id}
-                        onChange={handleInputChange}
-                        />
-                        <Input 
-                        name="name" 
-                        placeholder="Animal Name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        />
-                        <HStack spacing={4}>
-                        <Text>Gender:</Text>
-                        <RadioGroup 
-                            name="gender"
-                            defaultValue="Male"
-                            value={formData.gender}
-                            onChange={val => setFormData(prev => ({ ...prev, gender: val as 'Male' | 'Female' }))}
-                        >
-                            <HStack spacing={5}>
-                            <Radio value="Male">Male</Radio>
-                            <Radio value="Female">Female</Radio>
-                            </HStack>
-                        </RadioGroup>
-                        </HStack>
-                        <Input 
-                        name="dateOfAdmission" 
-                        placeholder="Date of Admission (YYYY-MM-DD)"
-                        value={formData.dateOfAdmission}
-                        onChange={handleInputChange}
-                        />
-                        <Input 
-                        name="dateOfBirth" 
-                        placeholder="Date of Birth (YYYY-MM-DD)"
-                        value={formData.dateOfBirth}
-                        onChange={handleInputChange}
-                        />
-                        <Input 
-                        name="type" 
-                        placeholder="Animal Type"
-                        value={formData.type}
-                        onChange={handleInputChange}
-                        />
-                        <Input 
-                        name="breed" 
-                        placeholder="Breed"
-                        value={formData.breed}
-                        onChange={handleInputChange}
-                        />
-                        <HStack spacing={4} width="100%">
-                        <Text>Requires Medication:</Text>
-                        <Switch 
-                            name="requiresMedication"
-                            isChecked={formData.requiresMedication}
-                            onChange={e => setFormData(prev => ({ ...prev, requiresMedication: e.target.checked }))}
-                        />
-                        </HStack>
-                    </VStack>
-                    </ModalBody>
-                <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-                    Add
-                </Button>
-                <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
-                    Cancel
-                </Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
       </Flex>
     </Flex>
   );
