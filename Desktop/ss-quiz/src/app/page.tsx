@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {motion} from 'framer-motion';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const fadeIn = {
   hidden: { opacity: 0 },
@@ -15,15 +16,33 @@ export default function Home() {
     initial="hidden"
     animate="visible"
     className="flex flex-col">
-        <motion.img src={'/detective.png'} alt='detective' className="mb-6 self-center relative" variants={fadeIn} custom={0.4}></motion.img>
-        <motion.h1 className="text-6xl mb-11 text-center" variants={fadeIn} custom={0.4}>
-          What will you do?
+        <motion.img src={'/detective.png'} alt='detective' className="mb-6 self-center relative" variants={fadeIn} custom={0}></motion.img>
+        <motion.h1 className="text-6xl mb-11 text-center" variants={fadeIn} custom={0}>
+          What will you choose?
         </motion.h1 >
-        <motion.h3 className="text-center text-med" variants={fadeIn} custom={1.5}>
-          Discover how your choices can affect evidence admissibility.
+        <motion.h3 className="text-center text-med" variants={fadeIn} custom={0}>
+          Discover what is considered
+          <span className="relative inline-block"> {/* Adding inline-block styling */}
+            <HoverCard>
+              <HoverCardTrigger>
+                <Button variant={"link"} className="text-slate-100 -mx-3 font-sans text-base underline">admissible</Button>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="flex">
+                  <div className="">
+                    <h4 className="font-semibold">Admissible</h4>
+                    <p className="text-sm">
+                      Acceptable or valid, especially as evidence in a court of law.
+                    </p>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          </span>
+          evidence in court.
         </motion.h3>
     </motion.header>
-    <motion.div className="mt-24" initial="hidden" animate="visible" variants={fadeIn} custom={3}>
+    <motion.div className="mt-24" initial="hidden" animate="visible" variants={fadeIn} custom={0}>
       <Link href={"/quiz"}>
         <Button className="on">Take the quiz</Button>
       </Link>

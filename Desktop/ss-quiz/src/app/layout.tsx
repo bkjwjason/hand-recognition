@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={'${inter.className} bg-stone-900 text-slate-100 font-bold container mx-auto p-4 flex flex-col min-h-screen'}>
+      <body className={'${inter.className} bg-stone-900 text-slate-100 font-normal container mx-auto p-4 flex flex-col min-h-screen'}>
         <main className='flex flex-col flex-grow justify-center'>
           {children}
         </main>
