@@ -147,6 +147,8 @@ const handleCommand = () => {
         const index = parseInt(parts[1]);
         const attributes = parts.slice(2).join(" ").split(",").map(attr => attr.trim());
         updateAnimalAttributes(index, attributes, true);
+        setCommand("");  // Clear the command input
+        setOutputMessage("Succesfully marked!")
       }
     } else if (command.startsWith("unmark")) {
       const parts = command.split(" ");
@@ -154,12 +156,15 @@ const handleCommand = () => {
         const index = parseInt(parts[1]);
         const attributes = parts.slice(2).join(" ").split(",").map(attr => attr.trim());
         updateAnimalAttributes(index, attributes, false);
+        setCommand("");  // Clear the command input
+        setOutputMessage("Succesfully unmarked!")
       }
     } else if (command.startsWith("delete")) {
       if(parts.length === 2) {
         const index = parseInt(parts[1]);
         if(index >= 1 && index <= animals.length) {
           handleDelete(animals[index - 1].id);
+          setCommand("");  // Clear the command input
           setOutputMessage(`Animal at index ${index} deleted!`);
         } else {
           setOutputMessage("Invalid index for delete!");
