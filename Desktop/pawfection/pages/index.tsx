@@ -38,7 +38,7 @@ const sampleAnimals: Animal[] = [
         dateOfBirth: new Date('2023-08-01'),
         type: 'Cat',
         breed: 'Tofu',
-        fed: true,
+        fed: false,
         played: false,
         medicated: false,
         requiresMedication: false
@@ -51,7 +51,7 @@ const sampleAnimals: Animal[] = [
         dateOfBirth: new Date('2000-12-09'),
         type: 'Dog',
         breed: 'Poodle',
-        fed: true,
+        fed: false,
         played: false,
         medicated: false,
         requiresMedication: true
@@ -64,7 +64,7 @@ const sampleAnimals: Animal[] = [
         dateOfBirth: new Date('2000-12-01'),
         type: 'Dog',
         breed: 'German Shepherd',
-        fed: true,
+        fed: false,
         played: false,
         medicated: false,
         requiresMedication: true
@@ -77,7 +77,7 @@ const sampleAnimals: Animal[] = [
         dateOfBirth: new Date('2000-11-01'),
         type: 'Dog',
         breed: 'Shiba Inu',
-        fed: true,
+        fed: false,
         played: false,
         medicated: false,
         requiresMedication: true
