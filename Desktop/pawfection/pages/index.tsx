@@ -173,9 +173,11 @@ const handleCommand = () => {
         setOutputMessage("No animal found with that name.");
         setFilteredAnimals([]);  // No matches, so clear the list.
       }
+      setCommand("");  // Clear the command input
     } else if (command === "list") {
       setFilteredAnimals(animals);
       setOutputMessage("Showing all animals.");
+      setCommand("");  // Clear the command input
     } else {
       setOutputMessage("Invalid command!");
     }
