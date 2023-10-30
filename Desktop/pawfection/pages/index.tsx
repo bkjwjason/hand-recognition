@@ -133,7 +133,9 @@ const handleCommand = () => {
           medicated: false,
           requiresMedication: true,
       };
-      setAnimals(prev => [...prev, newAnimal]);
+      const updatedAnimalsList = [...animals, newAnimal]; // Clone and add new animal
+      setAnimals(updatedAnimalsList);
+      setFilteredAnimals(updatedAnimalsList);
       setCommand("");  // Clear the command input
       setOutputMessage("Successfully added!"); 
   } else if (command.startsWith("mark")) {
@@ -215,6 +217,7 @@ const handleCommand = () => {
       const updatedAnimals = [...animals];
       updatedAnimals[index - 1] = updatedAnimal;
       setAnimals(updatedAnimals);
+      setFilteredAnimals(updatedAnimals);
   
       // Check if the selected animal is the one being updated
       if (selectedAnimal?.id === updatedAnimal.id) {
@@ -225,6 +228,7 @@ const handleCommand = () => {
     } else {
       setOutputMessage("Invalid index!");
     }
+    
   };
   return (
     <Flex minH="100vh" direction="column" p={5} color="white" bgColor="#A8D8EA">
@@ -277,6 +281,9 @@ const handleCommand = () => {
               )}
               {selectedAnimal?.id === '1111' && (
                 <Text>Injury: <br />1. Neck rashes. Check if it is red or raw on the skin, feed liquid medication as instructed on bottle.<br /></Text>
+              )}
+              {selectedAnimal?.id === '9999' && (
+                <Text>Injury: NIL</Text>
               )}
 
               <Text color={selectedAnimal.fed ? "green" : "red"}>Fed: {selectedAnimal.fed ? `Yes ${selectedAnimal.fedBy ? '(by ' + selectedAnimal.fedBy + ')' : ''}` : "No"}</Text>
