@@ -21,7 +21,7 @@ export default function RootLayout({
           {children}
         </main>
         <footer className={'mt-8 text-xs text-center font-normal'}>
-          This quiz was made for the Senior Seminar: Anatomy of Crime. Github: @bkjwjason
+          This quiz was made for the Senior Seminar: Anatomy of Crime. @bkjwjason
         </footer>
       </body>
     </html>
