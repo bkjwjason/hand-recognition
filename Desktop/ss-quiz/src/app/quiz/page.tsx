@@ -4,16 +4,20 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {motion} from "framer-motion";
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import {useCollection} from "react-firebase-hooks/firestore";
 
 
 const questions = [
-  {text: 'A burglary has occurred at a house. You arrived at the scene and interviewed the neighbors about what they might have witnessed. One of them mentions that he witnessed a suspicious figure entering the victim’s house on the day of the crime. He offers to testify as a witness in court to provide evidence. With the witness testimony, you decide to…' , answer: 'Keep the evidence'},
-  {text: 'The victim was severely injured in the process of chasing after the burglar. The burglar violently attacked the victim in the midst of escaping, and this resulted in open fractures and lacerations on the victim’s body. The victim’s families took multiple graphic photos of the injuries and provided them to you, hoping they could be used as evidence in court. With these photos, you decide to…', answer: 'Discard the evidence'},
-  {text: 'After thorough investigations, a man has been narrowed down as the suspect in the burglary. Upon searching his criminal record, you find out that he was previously convicted of multiple thefts and burglaries. Naturally, his records tell you that he has a high likelihood of committing this crime. With this newfound record, you decide to…', answer: 'Discard the evidence'},
-  {text: 'A skilled cybersecurity specialist in your team managed to hack into his home computer. Emails of him talking to his friend about his plans to break into a house, and photos of items that match the stolen items from the burglary were found. With these digital evidence, you decide to…', answer: 'Discard the evidence'},
-  {text: 'You have been issued a search warrant from the court to search the suspect\'s home. Upon searching his house, you found a lockpick that has been possibly used to aid the suspect in the burglary. Furthermore, there were marks at the scene of the burglary that suggested the use of a lockpick. You decide to….', answer: 'Keep the evidence'},
-  {text: 'Your team\'s cybersecurity specialist also searched the suspect\'s house and obtained all possible sources of digital evidence such as hard drives. He places it in a sealed plastic evidence bag and brings it to his lab to work on the files on the hard drive. After decrypting and working with the original files, he finds evidence that strongly suggests the suspect committed the crime. You decide to…', answer: 'Discard the evidence'},
-  {text: 'Lastly, to determine how the lockpick was used in the burglary, you called for the help of a locksmith. While his specialty did not lie in forensics, he tried his best to explain how the lockpick might have been used in the burglary. He offers to be appointed to act as an expert witness. You decide to..', answer:'Discard the evidence'},
+  {text: 'A burglary has occurred at a house. Upon arriving at the scene, you interviewed the neighbors to gather any eyewitness accounts. One neighbor reports having seen a suspicious figure entering the victim\'s house on the day of the crime and offers to testify in court regarding his observation.  His statement as evidence is...' , answer: 'Admissible'},
+  {text: 'The victim sustained severe injuries, including open fractures and lacerations, while chasing the burglar, who attacked them violently during the escape. The victim\'s family took graphic photographs of the injuries and submitted them to you for potential use as evidence in court. This evidence is...', answer: 'Inadmissible'},
+  {text: 'After a comprehensive investigation, a man has emerged as the primary suspect in the burglary. A search of his criminal history reveals prior convictions for theft and burglary, which may be pertinent to the investigation. Naturally, his records tell you that he has a high likelihood of committing this crime. This evidence is...', answer: 'Inadmissible'},
+  {text: 'A skilled cybersecurity specialist on your team hacked into the suspect\'s home computer. They discovered emails in which he discussed plans to commit a burglary, along with photos of items that match those reported stolen in the recent break-in. This evidence is...', answer: 'Inadmissible'},
+  {text: 'After obtaining a search warrant, you searched the suspect\'s home and found a lockpick that may have been used in the burglary, supported by marks at the crime scene indicative of lockpicking. This evidence is...', answer: 'Admissible'},
+  {text: 'Your team\'s cybersecurity specialist, acting on the search warrant, seized all potential digital evidence from the suspect\'s house, including hard drives. He secured them in a sealed plastic evidence bag and transported them to the lab. After legally decrypting and working on the original files, he uncovered evidence implicating the suspect in the crime. This evidence is...', answer: 'Inadmissible'},
+  {text: 'To ascertain the role of the lockpick in the burglary, you enlisted the assistance of a locksmith. Although his expertise is not in forensic analysis, he provided an informed explanation of how the lockpick could have been used. He has agreed to serve as an expert witness if required. His statement as evidence is...', answer:'Inadmissible'},
 ];
 
 const fadeIn = {
@@ -23,12 +27,11 @@ const fadeIn = {
 
 export default function Page() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Array<'Keep the evidence' | 'Discard the evidence'>>([]);
+  const [answers, setAnswers] = useState<Array<'Admissible' | 'Inadmissible'>>([]);
+  const [majorityPercentage, setMajorityPercentage] = useState<number | null>(null);
   const [hasSelected, setHasSelected] = useState(false);
   const [score, setScore] = useState(0);
-  const [keptEvidence, setKeptEvidence] = useState(0);
   const router = useRouter();
-
   const createQueryString = (name:string , value:string) => {
     const params = new URLSearchParams();
     params.set(name, value);
@@ -36,15 +39,11 @@ export default function Page() {
     return params.toString();
   };
 
-  const handleAnswer = (answer: 'Keep the evidence' | 'Discard the evidence') => {
+  const handleAnswer = (answer: 'Admissible' | 'Inadmissible') => {
     const newAnswers = [...answers, answer]; // Collect the new set of answers
     setAnswers((prev) => [...prev, answer]);
     setHasSelected(true);
-    if (answer === 'Keep the evidence') {
-      setKeptEvidence((prevKept) => prevKept + 1);
-    }
-
-    if (answer === questions[currentQuestion].answer && questions[currentQuestion].answer == 'Keep the evidence') {
+    if (answer === questions[currentQuestion].answer) {
       setScore((prevScore) => prevScore + 1);
     }
 
@@ -52,7 +51,7 @@ export default function Page() {
       setCurrentQuestion((prev) => prev + 1);
     } else {
       // Handle quiz completion
-      const queryString = createQueryString("score", score.toString()) + "&" + createQueryString("kept", keptEvidence.toString()) + "&choices=" + encodeURIComponent(JSON.stringify(newAnswers));
+      const queryString = createQueryString("score", score.toString()) + "&choices=" + encodeURIComponent(JSON.stringify(newAnswers));
       router.push("/score?" + queryString);
     }
   };
@@ -60,19 +59,46 @@ export default function Page() {
 
   return (
     <motion.div className="flex flex-col items-center" initial="hidden" animate="visible" key={currentQuestion}>
-      <motion.div className=" mb-6 p-5" variants={fadeIn} custom={0} key={currentQuestion}>
-        <motion.p className="text-xl">{questions[currentQuestion].text}</motion.p>
+      <motion.div className=" mb-6 p-5 flex items-center justify-center" variants={fadeIn} custom={0.2} key={currentQuestion}>
+        <Card className="xl:w-4/6 2xl:w-4/6">
+          <CardHeader>
+            <CardTitle>Question {currentQuestion + 1}</CardTitle>
+            <CardDescription>Decide whether the following evidence is
+              <span className="relative inline-block"> {/* Adding inline-block styling */}
+              <HoverCard>
+                <HoverCardTrigger>
+                  <Button variant={"link"} className="text-black -mx-3 font-sans text-s underline">admissible</Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="flex">
+                    <div className="">
+                      <h4 className="font-semibold">Admissible</h4>
+                      <p className="text-sm">
+                        Acceptable or valid, especially as evidence in a court of law.
+                      </p>
+                    </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            </span> to prove the criminal guilty.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <motion.p className="text-xl text-justify">{questions[currentQuestion].text}</motion.p>
+          </CardContent>
+        </Card>
       </motion.div>
       <div>
-        <motion.div variants={fadeIn} custom={0} key={currentQuestion}>
-            <Button className="mr-6 text-lg" onClick={() => handleAnswer('Keep the evidence')}>
-                Keep the evidence
+        <motion.div variants={fadeIn} custom={3} key={currentQuestion}>
+            <Button className="mr-6 text-lg" onClick={() => handleAnswer('Admissible')}>
+                Admissible
             </Button>
-            <Button className="text-lg"onClick={() => handleAnswer('Discard the evidence')}>
-                Discard the evidence
+            <Button className="text-lg"onClick={() => handleAnswer('Inadmissible')}>
+                Inadmissible
             </Button>
         </motion.div>
       </div>
+      {majorityPercentage !== null && (<Progress value={majorityPercentage} />)}
     </motion.div>
   );
 }

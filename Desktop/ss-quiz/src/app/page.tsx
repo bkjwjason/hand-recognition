@@ -16,12 +16,12 @@ export default function Home() {
     initial="hidden"
     animate="visible"
     className="flex flex-col">
-        <motion.img src={'/detective.png'} alt='detective' className="mb-6 self-center relative" variants={fadeIn} custom={0}></motion.img>
-        <motion.h1 className="text-6xl mb-11 text-center" variants={fadeIn} custom={0}>
+        <motion.img src={'/detective.png'} alt='detective' className="mb-6 self-center relative" variants={fadeIn} custom={0.2}></motion.img>
+        <motion.h1 className="text-6xl mb-11 text-center" variants={fadeIn} custom={0.2}>
           What will you choose?
         </motion.h1 >
-        <motion.h3 className="text-center text-med" variants={fadeIn} custom={0}>
-          Discover what is considered
+        <motion.h3 className="text-center text-med" variants={fadeIn} custom={0.6}>
+          Explore what constitutes
           <span className="relative inline-block"> {/* Adding inline-block styling */}
             <HoverCard>
               <HoverCardTrigger>
@@ -39,10 +39,10 @@ export default function Home() {
               </HoverCardContent>
             </HoverCard>
           </span>
-          evidence in court.
+          evidence in court under US and Singapore law.
         </motion.h3>
     </motion.header>
-    <motion.div className="mt-24" initial="hidden" animate="visible" variants={fadeIn} custom={0}>
+    <motion.div className="mt-24" initial="hidden" animate="visible" variants={fadeIn} custom={2}>
       <Link href={"/quiz"}>
         <Button className="on">Take the quiz</Button>
       </Link>
