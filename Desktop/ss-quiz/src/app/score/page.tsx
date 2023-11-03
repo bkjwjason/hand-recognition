@@ -8,7 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 const questions = [
   {text: 'A burglary has occurred at a house. Upon arriving at the scene, you interviewed the neighbors to gather any eyewitness accounts. One neighbor reports having seen a suspicious figure entering the victim\'s house on the day of the crime and offers to testify in court regarding his observation.  His statement as evidence is...', 
     answer: 'Admissible',
-    explanation: 'In both the <a href="https://sso.agc.gov.sg/Act/EA1893?ProvIds=P13-#pr120-" target="_blank" rel="noopener noreferrer">United States</a> and <a href="https://sso.agc.gov.sg/Act/EA1893?ProvIds=P13-#pr120-" target="_blank" rel="noopener noreferrer">Singapore</a>, every person is competent to be a witness unless rules provide otherwise. However, in both countries, the statement has to be provided by someone who witnessed the crime personally to be considered admissible.'
+    explanation: 'In both the <a href="https://www.law.cornell.edu/rules/fre/rule_601" target="_blank" rel="noopener noreferrer">United States</a> and <a href="https://sso.agc.gov.sg/Act/EA1893?ProvIds=P13-#pr120-" target="_blank" rel="noopener noreferrer">Singapore</a>, every person is competent to be a witness unless rules provide otherwise. However, in both countries, the statement has to be provided by someone who witnessed the crime personally to be considered admissible.'
     + ' If the person\'s statement is based on hearing another person\'s statement, that would be considered <a href="https://www.law.cornell.edu/rules/fre/rule_801" target="_blank" rel="noopener noreferrer">hearsay</a> and inadmissible.' 
     + '\n\nFor example, if person A is called to court as a witness in a criminal trial, and he says, "I heard person B say that he saw person C commit the crime", this would be hearsay. This is because person A has no personal knowledge of what person B had witnessed, and his statements cannot be cross examined. Person A\'s statement is hearsay evidence and is inadmissible. Person B should be called to testify.',
     },
@@ -90,7 +90,7 @@ export default function ScorePage() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <p className="text-2xl mb-6">You scored: {score} / 7! There were only 2 admissible evidence.</p>
+      <p className="text-2xl mb-6">You scored {score} / 7! There were only 2 admissible evidence.</p>
       <h3 className="text-2xl mb-4">Here are some details:</h3>
       <Accordion type="single" collapsible className="w-full mb-4">
           {questions.map((question, index) => (
