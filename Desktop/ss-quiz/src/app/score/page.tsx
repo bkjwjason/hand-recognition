@@ -17,13 +17,13 @@ const questions = [
     explanation: 'In both the <a href="https://www.law.cornell.edu/rules/fre/rule_403" target="_blank" rel="noopener noreferrer">United States</a> and <a href="https://www.elitigation.sg/gdviewer/s/2011_SGCA_32#p1_117" target="_blank" rel="noopener noreferrer">Singapore</a>, the courts have the discretion to exclude admissible evidence in criminal proceedings where its probative value is outweighed by its prejudicial effect.'
     +'\n\nSimply put, this rule permits the exclusion of evidence if the evidence is more likely to unduly influence or evoke emotional responses in the court than it is to provide legitimate proof of an element of the crime.'
     +' Graphic images will certainly do so. While photos do show the injuries sustained, the overly graphic images can cause prejudice in convicting a suspect and hence it will be inadmissible. A better form of evidence would be a medical report.'},
-  {text: 'After a comprehensive investigation, a man has emerged as the primary suspect in the burglary. A search of his criminal history reveals prior convictions for theft and burglary, which may be pertinent to the investigation. Naturally, his records tell you that he has a high likelihood of committing this crime. This evidence is...', 
+  {text: 'After a comprehensive investigation, a man has emerged as the primary suspect in the burglary. A search of his criminal history reveals prior convictions for theft and burglary, which may be pertinent to the investigation. Given his history, the records suggest a high likelihood of his involvement in this crime. This evidence is...', 
     answer: 'Inadmissible',
     explanation: 'In both the <a href="https://www.law.cornell.edu/rules/fre/rule_404" target="_blank" rel="noopener noreferrer">United States</a> and <a href="https://sso.agc.gov.sg/Act/EA1893?ProvIds=P11-#pr54-" target="_blank" rel="noopener noreferrer">Singapore</a>, evidence of a person’s character or character trait is inadmissible to prove that on a particular occasion, the person acted in accordance with the character or trait.'
     + '\n\nOne interesting thing to note is that in Singapore, while the “bad” character of a person is deemed irrelevant, the accused having a “good” character is deemed <a href="https://sso.agc.gov.sg/Act/EA1893?ProvIds=P11-#pr55-" target="_blank" rel="noopener noreferrer">relevant</a> (such as having no prior criminal records).'
   },
   {text: 'A skilled cybersecurity specialist on your team hacked into the suspect\'s home computer. They discovered emails in which he discussed plans to commit a burglary, along with photos of items that match those reported stolen in the recent break-in. This evidence is...', 
-    answer: 'Inadmissible',
+    answer: 'Inadmissible/Admissible',
     explanation: 'Hacking into a device without the owner’s permission is illegal. However, the admissibility of illegally obtained evidence differs in the United States and Singapore.'
 
     +'\n\nIn the <a href="https://www.law.cornell.edu/wex/fruit_of_the_poisonous_tree" target="_blank" rel="noopener noreferrer">United States</a>, evidence obtained illegally, such as through a violation of the Fourth Amendment (which covers illegal searches and seizures), is typically inadmissible. This is the exclusionary rule, also known as the "Fruit of the Poisonous Tree" which refers to evidence derived from something initially illegal.'
@@ -90,7 +90,7 @@ export default function ScorePage() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <p className="text-2xl mb-6">You scored {score} / 7! There were only 2 admissible evidence.</p>
+      <p className="text-2xl mb-6">There were only 2 admissible evidence.</p>
       <h3 className="text-2xl mb-4">Here are some details:</h3>
       <Accordion type="single" collapsible className="w-full mb-4">
           {questions.map((question, index) => (

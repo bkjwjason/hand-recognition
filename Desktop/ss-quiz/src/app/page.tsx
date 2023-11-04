@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {motion} from 'framer-motion';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Popover, PopoverContent } from "@/components/ui/popover";
+import { PopoverTrigger } from "@radix-ui/react-popover";
 
 const fadeIn = {
   hidden: { opacity: 0 },
@@ -18,26 +20,26 @@ export default function Home() {
     className="flex flex-col">
         <motion.img src={'/detective.png'} alt='detective' className="mb-6 self-center relative" variants={fadeIn} custom={0.2}></motion.img>
         <motion.h1 className="text-6xl mb-11 text-center" variants={fadeIn} custom={0.2}>
-          What will you choose?
+          Which evidence will stand?
         </motion.h1 >
         <motion.h3 className="text-center text-med" variants={fadeIn} custom={0.6}>
           Explore what constitutes
           <span className="relative inline-block"> {/* Adding inline-block styling */}
-            <HoverCard>
-              <HoverCardTrigger>
-                <Button variant={"link"} className="text-slate-100 -mx-3 font-sans text-base underline">admissible</Button>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <div className="flex">
-                  <div className="">
-                    <h4 className="font-semibold">Admissible</h4>
-                    <p className="text-sm">
-                      Acceptable or valid, especially as evidence in a court of law.
-                    </p>
-                  </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+            <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant={'link'} className="text-black -mx-3 font-sans text-s underline">admissible</Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <div className="flex">
+                        <div className="">
+                          <h4 className="font-semibold">Admissible</h4>
+                          <p className="text-sm">
+                            Acceptable or valid, especially as evidence in a court of law.
+                          </p>
+                        </div>
+                      </div>
+                  </PopoverContent>
+                </Popover>
           </span>
           evidence in court under US and Singapore law.
         </motion.h3>
